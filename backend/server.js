@@ -7,15 +7,22 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
+// app.use(cors({
+//   origin: ['http://localhost:3000', 'http://localhost:3001'], // Update this to your frontend's URL if different
+//   methods: 'GET,POST',
+//   allowedHeaders: 'Content-Type'
+// }));
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'], // Update this to your frontend's URL if different
+  origin: ['http://frontend-service:80'], // Update this to match your setup
   methods: 'GET,POST',
   allowedHeaders: 'Content-Type'
 }));
+
 app.use(bodyParser.json());
 
 // MongoDB connection string
-const mongoURI = 'mongodb+srv://vijaysaw50:<password>@cluster0.ildzm.mongodb.net/mernapp?retryWrites=true&w=majority';
+const mongoURI = 'mongodb+srv://vijaysaw50:vijay123@cluster0.ildzm.mongodb.net/mernapp?retryWrites=true&w=majority';
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })

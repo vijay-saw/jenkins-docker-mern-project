@@ -10,7 +10,7 @@ const App = () => {
 
     const handleFormSubmit = async (userData) => {
         try {
-            const response = await axios.post('http://localhost:5000/users', userData);
+            const response = await axios.post('http://backend-service:5000/users', userData);
             setUsers(prevUsers => [...prevUsers, response.data]);
             setMessage('User detail submitted successfully!');
             setMessageType('success');
