@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+CI/CD Pipeline for Frontend and Backend
+This repository contains a Jenkins pipeline configuration for automating the build, test, and deployment process of a frontend and backend application using Docker. The pipeline builds Docker images for both applications, scans them for vulnerabilities, and pushes them to Docker Hub.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Pipeline Overview
+The Jenkins pipeline includes the following stages:
 
-## Available Scripts
+Git Checkout:
 
-In the project directory, you can run:
+Retrieves the latest code from the GitHub repository.
+List Workspace:
 
-### `npm start`
+Lists the contents of the workspace and subdirectories to verify the files.
+Install Dependencies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Installs Node.js dependencies for both frontend and backend applications.
+Build Applications:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Builds the frontend and backend applications using npm.
+SonarQube Analysis:
 
-### `npm test`
+(Optional) Analyzes the code quality and security with SonarQube.
+Build Docker Images:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Creates Docker images for the frontend and backend applications.
+Trivy Scanning:
 
-### `npm run build`
+Scans the Docker images for vulnerabilities using Trivy.
+Push Docker Images:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Pushes the Docker images to Docker Hub.
+Configuration Details
+Environment Variables:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+docker_frontend_image_name: Name of the Docker image for the frontend application.
+docker_backend_image_name: Name of the Docker image for the backend application.
+docker_tag: Docker image tag based on the Jenkins build number.
+DOCKER_USERNAME: Docker Hub username.
+Credentials:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+docker_creds1: Docker Hub credentials stored as a secret text in Jenkins.
+Pipeline Script Breakdown
+Git Checkout:
 
-### `npm run eject`
+Uses the git command to pull the latest code from the main branch of the repository.
+List Workspace:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Lists files and directories to ensure the correct files are present.
+Install Dependencies:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Installs Node.js dependencies for the frontend and backend applications.
+Build Applications:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Runs npm install and npm run build to prepare the applications.
+SonarQube Analysis:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Analyzes the code with SonarQube (if configured). This stage is optional and can be commented out if not needed.
+Build Docker Images:
 
-## Learn More
+Uses docker build to create Docker images for both the frontend and backend applications.
+Trivy Scanning:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Scans the Docker images for vulnerabilities using Trivy.
+Push Docker Images:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Logs in to Docker Hub, tags the images, and pushes them to the Docker Hub repository.
+How to Use
+Set Up Jenkins:
 
-### Code Splitting
+Ensure Jenkins is configured with the necessary tools and credentials.
+Configure Pipeline:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Copy the pipeline script into your Jenkins pipeline job configuration.
+Trigger Build:
 
-### Analyzing the Bundle Size
+Start the build process from Jenkins. The pipeline will execute the defined steps automatically.
+Monitor and Verify:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Check the Jenkins console output for the status of each step.
+Verify that Docker images are pushed to Docker Hub and check for any potential vulnerabilities.
+Troubleshooting
+Port Conflicts:
 
-### Making a Progressive Web App
+Ensure that Docker ports are not in use by other services. Adjust port numbers if needed.
+Build Failures:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Review the Jenkins console output for detailed error messages and address any issues accordingly.
+Additional Notes
+Update the image names, ports, and credentials as required for your specific environment.
+The SonarQube Analysis stage is optional and can be disabled if not using SonarQube.
